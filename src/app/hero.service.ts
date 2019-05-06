@@ -21,6 +21,7 @@ export class HeroService {
     private http: HttpClient
   ) { }
 
+  /** GET heroes from the server */
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl)
       .pipe(
@@ -30,6 +31,7 @@ export class HeroService {
       );
   }
 
+  /** GET hero by id. Return `undefined` when id not found */
   getHero(id: number): Observable<Hero> {
     // Strings with `` are named template literals
     const url = `${ this.heroesUrl }/${ id }`;
@@ -41,6 +43,16 @@ export class HeroService {
       );
   }
 
+  /** POST: add a new hero to the server */
+  addHero(hero: Hero): Observable<Hero> {
+    return this.http.post<Hero>(this.heroesUrl, hero, httpOptions)
+      .pipe(
+        tap((newHero: Hero) => this.log(`HeroService: added hero with id=${ newHero.id }`)),
+        catchError(this.handleError<Hero>(`addHero ${ hero.name }`))
+      );
+  }
+
+  /** PUT: update the hero on the server */
   updateHero(hero: Hero): Observable<any> {
     return this.http.put(this.heroesUrl, hero, httpOptions);
   }
@@ -60,6 +72,7 @@ export class HeroService {
 
   }
 
+  /** Log a HeroService message with the MessageService */
   private log(message: string) {
     this.messageService.add(message);
   }
