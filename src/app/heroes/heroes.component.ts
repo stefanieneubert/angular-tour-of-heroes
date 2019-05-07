@@ -17,8 +17,15 @@ export class HeroesComponent implements OnInit {
   }
 
   addHero(name: string): void {
+    name = name.trim();
     this.heroService.addHero({name} as Hero)
       .subscribe(hero => this.heroes.push(hero));
+  }
+
+  deleteHero(hero: Hero) {
+    this.heroes = this.heroes.filter(h => h !== hero);
+    this.heroService.deleteHero(hero)
+      .subscribe(); // 'subscribe' is mandadory. otherwise nothing happens
   }
 
   constructor(private heroService: HeroService) {
