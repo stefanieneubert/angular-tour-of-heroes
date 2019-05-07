@@ -52,6 +52,19 @@ export class HeroService {
       );
   }
 
+  /** GET heroes whose name contains search term */
+  searchHeroes(term: string): Observable<Hero[]> {
+    if (!term.trim()) {
+      // return empty hero array. of() creates an observable
+      return of([]);
+    }
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`)
+      .pipe(
+        tap(_ => this.log(`heroService: searched for hero with term ${ term }`)),
+        catchError(this.handleError<Hero[]>(`searchHero term=${ term }`))
+      );
+  }
+
   /** PUT: update the hero on the server */
   updateHero(hero: Hero): Observable<any> {
     return this.http.put(this.heroesUrl, hero, httpOptions);
