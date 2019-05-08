@@ -25,3 +25,12 @@
   * Click event: ```(click)="onClick(item)"```
   * Input event: ```<input #refId (input)="search(refId.value)" />```
 * Routing: ```<a routerLink="/path"></a>```
+
+##### Objects
+* RxJS Observable: Equivalent to a promise
+```
+getData(): Observable<Type[]> {
+  return of(...); // returns some data as an Observable
+  return this.http.get<Type[]>(url) // returns the call as an Observable
+}
+```
